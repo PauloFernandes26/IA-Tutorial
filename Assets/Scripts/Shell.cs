@@ -2,39 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shell : MonoBehaviour {
-
+public class Shell : MonoBehaviour
+{
     public GameObject explosion;
-    float speed = 0.0f;
-    float ySpeed = 0.0f;
-    float mass = 30.0f;
-    float force = 4.0f;
-    float drag = 1.0f;
+    Rigidbody rb;
+    /*float mass = 10;
+    float force = 200;
+    float acceleration;
     float gravity = -9.8f;
     float gAccel;
-    float acceleration;
+    float speedZ;
+    float speedY;*/
 
-
-    void OnCollisionEnter(Collision col) {
-
-        if (col.gameObject.tag == "tank") {
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "tank")
+        {
             GameObject exp = Instantiate(explosion, this.transform.position, Quaternion.identity);
             Destroy(exp, 0.5f);
             Destroy(this.gameObject);
         }
     }
 
-    private void Start() {
-
-        acceleration = force / mass;
-        speed += acceleration * 1.0f;
-        gAccel = gravity / mass;
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = this.GetComponent<Rigidbody>();
     }
 
-    void LateUpdate() {
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        /*acceleration = force / mass;
+        speedZ += acceleration * Time.deltaTime;
+        gAccel = gravity / mass;
+        speedY += gAccel * Time.deltaTime;
+        this.transform.Translate(0, speedY, speedZ);
 
-        speed *= (1 - Time.deltaTime * drag);
-        ySpeed += gAccel * Time.deltaTime;
-        this.transform.Translate(0.0f, ySpeed, speed);
+        force = 0;*/
+        this.transform.forward = rb.velocity;
     }
 }
